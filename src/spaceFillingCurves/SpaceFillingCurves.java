@@ -18,7 +18,7 @@ public class SpaceFillingCurves {
         CurvePanel panel = new CurvePanel(c);
         window.setContentPane(panel);
         window.setVisible(true);
-        window.setSize(new Dimension(800, 800));
+        window.setSize(new Dimension(1920, 1045));
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
