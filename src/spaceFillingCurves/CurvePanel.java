@@ -22,6 +22,7 @@ public class CurvePanel extends JPanel implements KeyListener, MouseMotionListen
     private double x0, y0, zoom;
 
     private int mouseX, mouseY;
+    private int currentPanelHeight;
 
     public CurvePanel() {
         super();
@@ -34,9 +35,11 @@ public class CurvePanel extends JPanel implements KeyListener, MouseMotionListen
         this.addMouseMotionListener(this);
         this.addMouseWheelListener(this);
 
-        x0 = 406;
-        y0 = 360;
-        zoom = 156;
+        currentPanelHeight = 0;
+
+        x0 = 918;
+        y0 = 502;
+        zoom = 489;
     }
 
     public CurvePanel(Curve c) {
@@ -51,6 +54,8 @@ public class CurvePanel extends JPanel implements KeyListener, MouseMotionListen
         int width = g.getClipBounds().width;
         int height = g.getClipBounds().height;
         g.fillRect(0, 0, width, height);
+
+        currentPanelHeight = g.getClipBounds().height;
 
         curve.paint(g, x0, y0, zoom);
     }
@@ -85,7 +90,8 @@ public class CurvePanel extends JPanel implements KeyListener, MouseMotionListen
     @Override
     public void mouseDragged(MouseEvent e) {
         x0 += e.getX() - mouseX;
-        y0 += e.getY() - mouseY;
+        y0 -= e.getY() - mouseY;
+//        System.out.println("x0: " + x0 + ", y0: " + y0);
         mouseX = e.getX();
         mouseY = e.getY();
         repaint();
@@ -108,8 +114,9 @@ public class CurvePanel extends JPanel implements KeyListener, MouseMotionListen
         double coef = 1.1;
         double fact = (e.getWheelRotation() > 0 ? 1 / coef : coef);
         x0 = e.getX() + fact * (x0 - e.getX());
-        y0 = e.getY() + fact * (y0 - e.getY());
+        y0 = currentPanelHeight - e.getY() - fact * (currentPanelHeight - y0 - e.getY());
         zoom = fact * zoom;
+//        System.out.println("zoom: " + zoom);
         repaint();
     }
 
